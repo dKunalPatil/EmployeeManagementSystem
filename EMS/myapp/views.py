@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import SignUpFrom, LoginForm
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
-from datetime import datetime
+import datetime
 # Create your views here.
 
 def user_signup(request):
@@ -16,15 +16,14 @@ def user_signup(request):
     return render(request, 'myapp/signup.html', {'form':fm})
 
 def age_calculate(date):
-    return (datetime.date.today()-date).days/365
-    # return int((datetime.date.today() - date).days / 365.25)
+    # return (datetime.today().date - date).days/365
+    return int((datetime.date.today() - date).days / 365.25)
 
 
 def profile(request):
     if request.user.is_authenticated:
         dob = request.user.date_of_birth
         age = age_calculate(dob)
-        print(age)
         return render(request, 'myapp/profile.html', {'emp': age})
     else:
         return redirect('/login/')
@@ -36,11 +35,11 @@ class LoginView(auth_views.LoginView):
     template_name = 'myapp/login.html'
 
 
-def profile(request):
-    if request.user.is_authenticated:
-        return render(request, 'myapp/profile.html')
-    else:
-        return redirect('/login/')
+# def profile(request):
+#     if request.user.is_authenticated:
+#         return render(request, 'myapp/profile.html')
+#     else:
+#         return redirect('/login/')
 
 def user_logout(request):
     logout(request)
