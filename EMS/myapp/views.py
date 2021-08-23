@@ -28,23 +28,13 @@ def profile(request):
     else:
         return redirect('/login/')
 
-
-
-class LoginView(auth_views.LoginView):
-    form_class = LoginForm
-    template_name = 'myapp/login.html'
-
-
-# def profile(request):
-#     if request.user.is_authenticated:
-#         return render(request, 'myapp/profile.html')
-#     else:
-#         return redirect('/login/')
-
 def user_logout(request):
     logout(request)
     return redirect('/login/')
 
+class LoginView(auth_views.LoginView):
+    form_class = LoginForm
+    template_name = 'myapp/login.html'
 
 class PasswordChangeView(auth_views.PasswordChangeView):
     template_name = 'myapp/changepass.html'
