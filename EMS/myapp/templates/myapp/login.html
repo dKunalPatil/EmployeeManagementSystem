@@ -12,6 +12,11 @@
         {% comment %} <a href="{% url 'signup' %}" role="button">SignUp</a> {% endcomment %}
     </div>
 </form>
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p> {{error}} </p>
+{% endfor %}
+{% endif %}
 
 
 

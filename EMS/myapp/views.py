@@ -2,18 +2,24 @@ from django.shortcuts import render, redirect
 from .forms import SignUpFrom, LoginForm
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
+from django.contrib import messages
 import datetime
 # Create your views here.
 
 def user_signup(request):
-    if request.method == 'POST':
-        fm = SignUpFrom(request.POST, request.FILES)
-        if fm.is_valid():
-            fm.save()
-            return redirect('/')
+    if not request.user.is_authenticated:
+        if request.method == 'POST':
+            fm = SignUpFrom(request.POST, request.FILES)
+            if fm.is_valid():
+                fm.save()
+                messages.success(request, "Your Account has been Successfully Created !!")
+                return redirect('/')
+        else:
+            fm = SignUpFrom()
+        return render(request, 'myapp/signup.html', {'form':fm})
     else:
-        fm = SignUpFrom()
-    return render(request, 'myapp/signup.html', {'form':fm})
+        messages.error(request, "Already Logged In!!")
+        return redirect('/profile/')
 
 def age_calculate(date):
     # return (datetime.today().date - date).days/365
@@ -24,6 +30,7 @@ def profile(request):
     if request.user.is_authenticated:
         dob = request.user.date_of_birth
         age = age_calculate(dob)
+        messages.success(request, "You are Logged In Successfully !!")
         return render(request, 'myapp/profile.html', {'emp': age})
     else:
         return redirect('/login/')

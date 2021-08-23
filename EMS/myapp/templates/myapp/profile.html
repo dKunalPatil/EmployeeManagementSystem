@@ -1,5 +1,14 @@
 {% extends 'myapp/base.html' %}
 {% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{message.tags}} alert-dismissible fade show" {% endif %} >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    {{message}} </div>
+    {% endfor %}
+{% endif %}
 <h1>Profile Page</h1>
 <h3>{{emp}} years</h3>
 <button><a href="{% url 'logout' %}">logout</a></button>
@@ -7,7 +16,6 @@
 
 </section>
 <h1>{{request.user.first_name}}</h1>
-<h3>{{request.user.department}}</h3>
 </td>
 <td>
 <ul>

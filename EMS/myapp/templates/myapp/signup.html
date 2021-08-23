@@ -16,6 +16,13 @@
     {% endfor %}
     {% endif %}
 </form>
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p class="alert alert-danger"> {{error}} </p>
+{% endfor %}
+{% endif %}
+
+
 </div>
 
 {% endblock content %}
