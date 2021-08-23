@@ -1,0 +1,21 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<form action="" method="post" novalidate>
+{% csrf_token %}
+<div class="container mt-5">
+
+{% for fm in form %}
+    {{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br><br>
+{% endfor %}
+    <input type="submit" value="Save">
+    <a href="{% url 'profile' %}">Cancel</a>
+   
+    {% if messages %}
+    {% for message in messages %}
+    <small {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} > {{message}} </small>
+    {% endfor %}
+    {% endif %}
+</form>
+</div>
+
+{% endblock content %}
