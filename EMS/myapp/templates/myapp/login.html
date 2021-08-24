@@ -4,19 +4,20 @@
     {% csrf_token %}
     <p>If you have not created an account yet, then please
     <a href="{% url 'signup' %}">sign up</a> first.</p>
-    {% for fm in form %}
     <div class="container mt-5">
+    {% for fm in form %}
         {{fm.label_tag}} {{fm}} {{fm.errors}} <br><br>
         {% endfor %}
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p> {{error}} </p>
+        {% endfor %}
+        {% endif %}
         <input type="submit" value="Login">
+        <a href="/password_reset">Forgot password?</a>
         {% comment %} <a href="{% url 'signup' %}" role="button">SignUp</a> {% endcomment %}
     </div>
 </form>
-{% if form.non_field_errors %}
-{% for error in form.non_field_errors %}
-<p> {{error}} </p>
-{% endfor %}
-{% endif %}
 
 
 
