@@ -11,6 +11,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     employee_id = models.IntegerField(unique=True, blank=True, null=True)
+    mobile_number = models.CharField(max_length=10, null=True)
     date_of_birth = models.DateField(null=True)
     emp_ctc = models.IntegerField(null=True)
     manager_name = models.CharField(max_length=150, null=True, blank=True)

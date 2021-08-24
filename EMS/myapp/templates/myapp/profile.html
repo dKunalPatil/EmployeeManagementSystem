@@ -1,4 +1,7 @@
 {% extends 'myapp/base.html' %}
+{% block title %}
+Profile Page
+{% endblock title %}
 {% block content %}
 {% if messages %}
     {% for message in messages %}
@@ -9,23 +12,36 @@
     {{message}} </div>
     {% endfor %}
 {% endif %}
-<h1>Profile Page</h1>
+
+{% comment %} <h1>{{request.user.first_name}}</h1> {% endcomment %}
+<div class="container mt-4">
+<h1>{{request.user.get_full_name}}</h1>
 <h3>{{emp}} years</h3>
 <button><a href="{% url 'logout' %}">logout</a></button>
 <a href="{% url 'changepass' %}">Change Password</a>
-
-</section>
-<h1>{{request.user.first_name}}</h1>
-</td>
-<td>
-<ul>
-<li><b>Full name</b> <input type="text" name="fname" id="fname" maxlength="100" value="{{request.user.get_full_name}}" required /> </li>
+</div>
+{% comment %} <li><b>Full name</b> <input type="text" name="fname" id="fname" maxlength="100" value="" required /> </li>
 <li><b>Email</b> <input type="email" name="email" id="email" maxlength="150" value="{{request.user.email}}" required /></li>
-<li><b>Contact number</b> <input type="tel" value="0123456789" required /> </li>
+<li><b>Contact number</b> <input type="tel" value="{{request.user.mobile_number}}" required /> </li>
 <li><b>Date of Birth</b> <input type="text" value="{{request.user.date_of_birth}}" required /> </li>    
 </ul>
 </td>
-</tr>
+</tr> {% endcomment %}
 
+<section>
+<form class="mt-5 text-right mr-4" action="" method="post">
+{% csrf_token %}
+{% if form.non_field_errors %}
+{% for error in form.non_field_errors %}
+<p>{{error}}</p>
+{% endfor %}
+{% endif %}
+
+{% for fm in form %}
+{{fm.label_tag}} {{fm}} {{fm.errors|striptags}} <br> <br>
+{% endfor %}
+<input type="submit" value="Save">
+</form>
+</section>
 
 {% endblock content %}

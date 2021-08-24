@@ -1,6 +1,6 @@
 from django import forms
 from .models import User
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm, UserChangeForm
 from django.utils.translation import gettext_lazy as _
 
 # class DateInput(form.DateInupt):
@@ -11,11 +11,12 @@ class SignUpFrom(UserCreationForm):
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
     class Meta:
         model = User
-        fields = ("email", "employee_id", "date_of_birth", "emp_ctc", "manager_name",
+        fields = ("email", "employee_id", "mobile_number", "date_of_birth", "emp_ctc", "manager_name",
                   "date_of_exit", "department", "remarks", "emp_cv", "emp_images",)
         widgets = {
             'email':forms.EmailInput(attrs={'class':'form-control'}),
             'employee_id':forms.NumberInput(attrs={'class':'form-control'}),
+            'mobile_number':forms.NumberInput(attrs={'class':'form-control'}),
             'date_of_birth':forms.DateInput(attrs={'class':'form-control','type':'date'}),
             'emp_ctc':forms.NumberInput(attrs={'class':'form-control'}),
             'manager_name':forms.TextInput(attrs={'class':'form-control'}),
@@ -56,3 +57,10 @@ class ChangePasswordForm(PasswordChangeForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class':'form-control'}),
     )
+
+
+class EditProfileForm(UserChangeForm):
+    password = None
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'mobile_number', 'department', 'manager_name', 'remarks']

@@ -10,11 +10,11 @@
 {% endfor %}
     <input type="submit" value="Submit">
    
-    {% if messages %}
+    {% comment %} {% if messages %}
     {% for message in messages %}
     <small {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} > {{message}} </small>
     {% endfor %}
-    {% endif %}
+    {% endif %} {% endcomment %}
 </form>
 {% if form.non_field_errors %}
 {% for error in form.non_field_errors %}

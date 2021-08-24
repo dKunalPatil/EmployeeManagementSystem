@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User
-from .forms import SignUpFrom, LoginForm, ChangePasswordForm
+from .forms import SignUpFrom, LoginForm, ChangePasswordForm, EditProfileForm
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
 from django.contrib import messages
@@ -25,8 +25,8 @@ def user_signup(request):
             fm = SignUpFrom(request.POST, request.FILES)
             if fm.is_valid():
                 fm.save()
-                messages.success(request, "Your Account has been Successfully Created !!")
-                return redirect('/')
+                messages.success(request, "Your Account has been Created Successfully!!")
+                return redirect('/profile/')
         else:
             fm = SignUpFrom()
         return render(request, 'myapp/signup.html', {'form':fm})
@@ -41,10 +41,16 @@ def age_calculate(date):
 
 def profile(request):
     if request.user.is_authenticated:
+        if request.method == "POST":
+            fm = EditProfileForm(request.POST, instance=request.user)
+            if fm.is_valid():
+                messages.success(request, "Profile Updated !!")
+                fm.save()
+        else:
+            fm = EditProfileForm(instance=request.user)
         dob = request.user.date_of_birth
         age = age_calculate(dob)
-        messages.success(request, "You are Logged In Successfully !!")
-        return render(request, 'myapp/profile.html', {'emp': age})
+        return render(request, 'myapp/profile.html', {'emp': age, 'form':fm})
     else:
         return redirect('/login/')
 
@@ -55,22 +61,16 @@ def user_logout(request):
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'myapp/login.html'
+    def form_valid(self, form):
+        messages.success(self.request, "Your are Logged In!!")
+        return super().form_valid(form)
 
-# class PasswordResetView(auth_views.PasswordResetView):
-#     template_name = 'myapp/resetpass.html'
-#     email_template_name = 'myapp/resetpassdone.html'
-#     success_url = '/resetpassdone/'
-
-# class PasswordChangeDoneView(auth_views.PasswordResetDoneView):
-#     template_name = 'myapp/resetpassdone.html'
 
 class PasswordChangeView(auth_views.PasswordChangeView):
     form_class = ChangePasswordForm
     template_name = 'myapp/changepass.html'
-    success_url = '/changepassdone/'
+    success_url = '/profile/'
 
-class PasswordChangeDoneView(auth_views.PasswordChangeDoneView):
-    template_name = 'myapp/changepassdone.html'
 
 #Password Reser Starts Here -->
 def password_reset_request(request):
