@@ -1,23 +1,89 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+{% block css %}
+<style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    .global-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+    }
+
+    form {
+        padding-top: 10px;
+        font-size: 14px;
+        margin-top: 30px;
+    }
+
+    .card-title {
+        font-weight: 300;
+    }
+
+    .btn {
+        font-size: 14px;
+        margin-top: 20px;
+    }
+
+
+    .login-form {
+        width: 330px;
+        margin: 20px;
+    }
+
+    .sign-up {
+        text-align: center;
+        padding: 20px 0 0;
+    }
+
+    .alert {
+        margin-bottom: -30px;
+        font-size: 13px;
+        margin-top: 20px;
+    }
+</style>
+{% endblock css %}
 {% block content %}
-<form action="" method="post" novalidate>
-    {% csrf_token %}
-    <p>If you have not created an account yet, then please
-    <a href="{% url 'signup' %}">sign up</a> first.</p>
-    <div class="container mt-5">
-    {% for fm in form %}
-        {{fm.label_tag}} {{fm}} {{fm.errors}} <br><br>
-        {% endfor %}
-        {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-        <p> {{error}} </p>
-        {% endfor %}
-        {% endif %}
-        <input type="submit" value="Login">
-        <a href="/password_reset">Forgot password?</a>
-        {% comment %} <a href="{% url 'signup' %}" role="button">SignUp</a> {% endcomment %}
+<div class="global-container">
+    <div class="card login-form">
+        <div class="card-body">
+            <div class="text-center my-2">
+                <img class="mb-4 p-2 rounded shadow" src="{% static 'myapp/images/ems.png' %}" alt="EMS Image"
+                    width="92" height="92">
+            </div>
+            <h3 class="card-title text-center">Log in to EMS </h3>
+            <div class="card-text">
+                {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{error}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <form action="" method="post" novalidate>
+                    {% csrf_token %}
+                    {% for fm in form %}
+                    {{fm.label_tag}} {{fm}} {{fm.errors}}<br>
+                    {% endfor %}
+                    <a href="{% url 'password_reset' %}" class="mb-2" style="float:right;font-size:12px;">Forgot
+                        password?</a>
+                    <button type="submit" class="btn btn-outline-success btn-block">Sign in</button>
+
+                    <div class="sign-up">
+                        Don't have an account? <a href="{% url 'signup' %}">Create One</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</form>
+</div>
 
 
 

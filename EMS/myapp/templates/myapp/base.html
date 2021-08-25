@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'myapp/css/bootstrap.css' %}">
+    {% block css %}{% endblock css %}
     <title>Document</title>
 </head>
 <body>
+{% include 'myapp/navbar.html' %}
+
     {% block content %}
     {% endblock content %}
 
