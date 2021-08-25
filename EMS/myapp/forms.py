@@ -10,6 +10,12 @@ from django.utils.translation import gettext_lazy as _
 class SignUpFrom(UserCreationForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    def clean_date_of_birth(self):
+            dob = self.cleaned_data['date_of_birth']
+            age = (date.today() - dob).days / 365
+            if age < 18:
+                raise forms.ValidationError('You must be at least 18 years old')
+            return dob
     class Meta:
         model = User
         fields = ("email", "employee_id", "mobile_number", "date_of_birth", "emp_ctc", "manager_name",
@@ -27,12 +33,6 @@ class SignUpFrom(UserCreationForm):
             'emp_cv':forms.FileInput(attrs={'class':'form-control'}),
             'emp_images':forms.FileInput(attrs={'class':'form-control'}),
         }
-        def clean_date_of_birth(self):
-                dob = self.cleaned_data['date_of_birth']
-                age = (date.today() - dob).days / 365
-                if age < 18:
-                    raise forms.ValidationError('You must be at least 18 years old')
-                return dob
 
 
 
