@@ -52,12 +52,12 @@ def profile(request):
         # messages.success(request, "You are Logged In Successfully !!")
         return render(request, 'myapp/profile.html', {'emp': age})
     else:
-        return redirect('/login/')
+        return redirect('/')
 
 
 def user_logout(request):
     logout(request)
-    return redirect('/login/')
+    return redirect('/')
 
 
 class LoginView(auth_views.LoginView):

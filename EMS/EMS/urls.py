@@ -23,9 +23,9 @@ from myapp.views import LoginView, PasswordChangeDoneView, PasswordChangeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name="home"),
+    path('home/', views.home, name="home"),
     path('signup/', views.user_signup, name="signup"),
-    path('login/', LoginView.as_view(), name="login"),
+    path('', LoginView.as_view(), name="login"),
     path('profile/', views.profile, name="profile"),
     path('logout/', views.user_logout, name="logout"),
     path("password_reset", views.password_reset_request, name="password_reset"),
