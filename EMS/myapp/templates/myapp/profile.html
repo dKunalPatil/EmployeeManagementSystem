@@ -28,6 +28,8 @@
                     <dd class="col-sm-7 text-muted">{{request.user.get_full_name}}</dd>
                     <dt class="col-sm-5">Age:</dt>
                     <dd class="col-sm-7 text-muted">{{emp}} Years</dd>
+                    <dt class="col-sm-5">Mobile Number:</dt>
+                    <dd class="col-sm-7 text-muted">{{request.user.mobile_number}} </dd>
                     <dt class="col-sm-5">Email:</dt>
                     <dd class="col-sm-7 text-muted">{{request.user.email}}</dd>
                     <dt class="col-sm-5">Date of Birth:</dt>
@@ -50,7 +52,7 @@
         </div>
     </div>
     <div class="container text-center">
-            <a href="{% url 'changepass' %}" class="btn btn-info mx-3">Edit Details</a> 
+            <a href="{% url 'editDetail' %}" class="btn btn-info mx-3">Edit Details</a> 
             <a href="{% url 'changepass' %}" class="btn btn-danger mx-3">Change Password</a>
     </div>
 

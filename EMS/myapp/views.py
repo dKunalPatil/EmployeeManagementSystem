@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import User
-from .forms import SignUpFrom, LoginForm, ChangePasswordForm
+from .forms import SignUpFrom, LoginForm, ChangePasswordForm, EditProfileForm
 from django.contrib.auth import views as auth_views
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.contrib import messages
 import datetime
 # Email ka Zamaa-->
@@ -31,7 +31,7 @@ def user_signup(request):
                 fm.save()
                 messages.success(
                     request, "Your Account has been Successfully Created !!")
-                return redirect('/')
+                return redirect('/profile/')
         else:
             fm = SignUpFrom()
         return render(request, 'myapp/signup.html', {'form': fm})
@@ -51,6 +51,21 @@ def profile(request):
         age = age_calculate(dob)
         # messages.success(request, "You are Logged In Successfully !!")
         return render(request, 'myapp/profile.html', {'emp': age})
+    else:
+        return redirect('/')
+
+
+def edit_detail(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            fm = EditProfileForm(request.POST, instance=request.user)
+            if fm.is_valid():
+                messages.success(request, "Profile Updated !!")
+                fm.save()
+                return redirect('/profile/')
+        else:
+            fm = EditProfileForm(instance=request.user)
+            return render(request, 'myapp/editprofile.html', {'form': fm})
     else:
         return redirect('/')
 
@@ -76,11 +91,8 @@ class LoginView(auth_views.LoginView):
 class PasswordChangeView(auth_views.PasswordChangeView):
     form_class = ChangePasswordForm
     template_name = 'myapp/changepass.html'
-    success_url = '/changepassdone/'
+    success_url = '/profile/'
 
-
-class PasswordChangeDoneView(auth_views.PasswordChangeDoneView):
-    template_name = 'myapp/changepassdone.html'
 
 # Password Reser Starts Here -->
 
