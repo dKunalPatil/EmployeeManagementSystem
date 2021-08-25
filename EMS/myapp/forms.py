@@ -1,4 +1,5 @@
 from django import forms
+from datetime import date
 from .models import User
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm, UserChangeForm
 from django.utils.translation import gettext_lazy as _
@@ -26,7 +27,12 @@ class SignUpFrom(UserCreationForm):
             'emp_cv':forms.FileInput(attrs={'class':'form-control'}),
             'emp_images':forms.FileInput(attrs={'class':'form-control'}),
         }
-
+        def clean_date_of_birth(self):
+                dob = self.cleaned_data['date_of_birth']
+                age = (date.today() - dob).days / 365
+                if age < 18:
+                    raise forms.ValidationError('You must be at least 18 years old')
+                return dob
 
 
 
