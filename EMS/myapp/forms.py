@@ -1,17 +1,58 @@
 from django import forms
-from .models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.utils.translation import gettext_lazy as _
+from datetime import date
 
+from django.forms import widgets
+from phonenumbers.phonenumberutil import example_number
+from .models import User
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm, UserChangeForm, PasswordResetForm
+from django.utils.translation import gettext_lazy as _
+from phonenumber_field.formfields import PhoneNumberField
 # class DateInput(form.DateInupt):
 #     input_type = 'date'
+# Signup Form Starts Here -->
+
 
 class SignUpFrom(UserCreationForm):
+    password1 = forms.CharField(
+        label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control'}))
+    mobile_number = PhoneNumberField(
+        widget=widgets.NumberInput(attrs={'class': 'form-control'}))
+    example_number = "+919875614230"
+    mobile_number.error_messages[
+        'invalid'] = f'Please enter a valid Number like : {example_number}'
+
+    def clean_date_of_birth(self):
+        dob = self.cleaned_data['date_of_birth']
+        age = (date.today() - dob).days / 365
+        if age < 18:
+            raise forms.ValidationError('You must be at least 18 years old')
+        return dob
+
     class Meta:
         model = User
-        fields = ("email", "employee_id", "date_of_birth", "emp_ctc", "manager_name",
-                  "date_of_exit", "department", "remarks", "emp_cv", "emp_images",)
+        fields = ("email", "first_name", "last_name", "employee_id", "mobile_number", "date_of_birth",
+                  "gender", "emp_ctc", "manager_name", "department", "remarks", "emp_cv", "emp_images",)
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'employee_id': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'mobile_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'mobile_number': PhoneNumberField(),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'emp_ctc': forms.NumberInput(attrs={'class': 'form-control'}),
+            'manager_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'department': forms.TextInput(attrs={'class': 'form-control'}),
+            'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
+            'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
+            'gender': forms.RadioSelect(attrs={'class': 'form-check-input position-static'}),
+        }
 
+
+# Login Form Starts here -->
 class LoginForm(AuthenticationForm):
     username = forms.CharField(max_length=100, widget=forms.TextInput(
         attrs={'class': 'form-control'}))
@@ -21,3 +62,45 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput(
             attrs={'autocomplete': 'current-password', 'class': 'form-control'}),
     )
+
+# Change Password Form Starts Here -->
+
+
+class ChangePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label=_("Old password"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'current-password', 'autofocus': True, 'class': 'form-control'}),
+    )
+    new_password1 = forms.CharField(
+        label=_("New password"),
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password', 'class': 'form-control'}),
+    )
+    new_password2 = forms.CharField(
+        label=_("New password confirmation"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password', 'class': 'form-control'}),
+    )
+
+
+class EditProfileForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'mobile_number',
+                  'department', 'manager_name', 'gender', 'remarks', 'emp_images', 'emp_cv']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'mobile_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            'manager_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'department': forms.TextInput(attrs={'class': 'form-control'}),
+            'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
+            'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
+            'gender': forms.RadioSelect(),
+        }
