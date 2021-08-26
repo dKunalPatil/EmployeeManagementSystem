@@ -30,8 +30,8 @@ def user_signup(request):
             if fm.is_valid():
                 fm.save()
                 messages.success(
-                    request, "Your Account has been Successfully Created !!")
-                return redirect('/profile/')
+                    request, "Your Account has been Successfully Created !! Please Login!!")
+                return redirect('/')
         else:
             fm = SignUpFrom()
         return render(request, 'myapp/signup.html', {'form': fm})
@@ -78,6 +78,9 @@ def user_logout(request):
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'myapp/login.html'
+    def form_valid(self, form):
+        messages.success(self.request, "Your are Logged In!!")
+        return super().form_valid(form)
 
 # class PasswordResetView(auth_views.PasswordResetView):
 #     template_name = 'myapp/resetpass.html'

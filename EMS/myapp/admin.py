@@ -13,7 +13,7 @@ class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('date_of_birth',
-         'mobile_number', 'first_name', 'last_name')}),
+         'mobile_number', 'first_name', 'last_name', 'gender')}),
         (_('Details'), {'fields': ('employee_id', 'emp_ctc',
          'manager_name', 'department', 'remarks')}),
         (_('Important dates'), {'fields': ('date_joined', 'date_of_exit')}),

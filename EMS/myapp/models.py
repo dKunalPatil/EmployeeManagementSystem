@@ -14,6 +14,12 @@ class User(AbstractUser):
     employee_id = models.IntegerField(unique=True, blank=True, null=True)
     mobile_number = models.CharField(max_length=10, null=True)
     date_of_birth = models.DateField(null=True)
+    TYPE_SELECT = (
+        ('FEMALE', 'Female'),
+        ('MALE', 'Male'),
+        ('OTHER', 'Other'),
+    )
+    gender = models.CharField(max_length=11,choices=TYPE_SELECT, default="Male")
     emp_ctc = models.IntegerField(null=True)
     manager_name = models.CharField(max_length=150, null=True, blank=True)
     date_of_exit = models.DateField(null=True, blank=True)

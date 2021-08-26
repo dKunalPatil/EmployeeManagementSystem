@@ -49,6 +49,16 @@
 </style>
 {% endblock css %}
 {% block content %}
+{% if messages %}
+{% for message in messages %}
+<div {% if message.tags %} class="alert alert-{{message.tags}} alert-dismissible fade show my-0" {% endif %}>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    {{message}}
+</div>
+{% endfor %}
+{% endif %}
 <div class="global-container">
     <div class="card login-form">
         <div class="card-body">

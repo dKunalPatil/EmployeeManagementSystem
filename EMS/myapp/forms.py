@@ -21,11 +21,14 @@ class SignUpFrom(UserCreationForm):
         if age < 18:
             raise forms.ValidationError('You must be at least 18 years old')
         return dob
+    def clean_first_name(self):
+        fn = self.cleaned_data['first_name'].capfirst()
+        return fn
 
     class Meta:
         model = User
         fields = ("email", "first_name", "last_name", "employee_id", "mobile_number", "date_of_birth",
-                  "emp_ctc", "manager_name", "department", "remarks", "emp_cv", "emp_images",)
+                  "gender", "emp_ctc", "manager_name", "department", "remarks", "emp_cv", "emp_images",)
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -39,6 +42,7 @@ class SignUpFrom(UserCreationForm):
             'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
             'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
+            'gender': forms.RadioSelect(),
         }
 
 
@@ -82,7 +86,7 @@ class EditProfileForm(UserChangeForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'mobile_number',
-                  'department', 'manager_name', 'remarks', 'emp_images', 'emp_cv']
+                  'department', 'manager_name', 'gender', 'remarks', 'emp_images', 'emp_cv']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -92,4 +96,5 @@ class EditProfileForm(UserChangeForm):
             'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
             'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
+            'gender': forms.RadioSelect(),
         }

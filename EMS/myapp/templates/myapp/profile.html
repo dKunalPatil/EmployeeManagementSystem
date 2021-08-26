@@ -17,7 +17,7 @@
     <div class="text-center">
         <img src="{% static 'myapp/images/ems.png' %}" class="img-fluid img-thumbnail "
             style="height: 200px;" alt="Profile Pic">
-        <h2 class="my-2">{{request.user.first_name}}</h2>
+        <h2 class="my-2">{{request.user.first_name|capfirst}}</h2>
     </div>
     <div class="container">
         <div class="row">
@@ -25,7 +25,7 @@
                 <h3 class="text-center my-2">Personal Details</h3>
                 <dl class="row">
                     <dt class="col-sm-5">Full Name:</dt>
-                    <dd class="col-sm-7 text-muted">{{request.user.get_full_name}}</dd>
+                    <dd class="col-sm-7 text-muted">{{request.user.get_full_name|title}}</dd>
                     <dt class="col-sm-5">Age:</dt>
                     <dd class="col-sm-7 text-muted">{{emp}} Years</dd>
                     <dt class="col-sm-5">Mobile Number:</dt>
@@ -34,6 +34,8 @@
                     <dd class="col-sm-7 text-muted">{{request.user.email}}</dd>
                     <dt class="col-sm-5">Date of Birth:</dt>
                     <dd class="col-sm-7 text-muted">{{request.user.date_of_birth}}</dd>
+                    <dt class="col-sm-5">Gender:</dt>
+                    <dd class="col-sm-7 text-muted">{{request.user.gender}}</dd>
                 </dl>
             </div>
             <div class="col-md-4 offset-2">
