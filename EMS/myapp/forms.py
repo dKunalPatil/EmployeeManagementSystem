@@ -39,7 +39,7 @@ class SignUpFrom(UserCreationForm):
             'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
             'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
-            'gender': forms.RadioSelect(),
+            'gender': forms.RadioSelect(attrs={'class': 'form-check-input position-static'}),
         }
 
 

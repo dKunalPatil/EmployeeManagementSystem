@@ -34,6 +34,7 @@ def user_signup(request):
                 return redirect('/')
         else:
             fm = SignUpFrom()
+            # print(fm)
         return render(request, 'myapp/signup.html', {'form': fm})
     else:
         messages.error(request, "Already Logged In!!")
@@ -78,6 +79,7 @@ def user_logout(request):
 class LoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'myapp/login.html'
+
     def form_valid(self, form):
         messages.success(self.request, "Your are Logged In!!")
         return super().form_valid(form)
