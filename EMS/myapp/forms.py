@@ -21,9 +21,6 @@ class SignUpFrom(UserCreationForm):
         if age < 18:
             raise forms.ValidationError('You must be at least 18 years old')
         return dob
-    def clean_first_name(self):
-        fn = self.cleaned_data['first_name'].capfirst()
-        return fn
 
     class Meta:
         model = User
