@@ -1,9 +1,12 @@
 from django import forms
 from datetime import date
+
+from django.forms import widgets
+from phonenumbers.phonenumberutil import example_number
 from .models import User
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, AuthenticationForm, UserChangeForm, PasswordResetForm
 from django.utils.translation import gettext_lazy as _
-
+from phonenumber_field.formfields import PhoneNumberField
 # class DateInput(form.DateInupt):
 #     input_type = 'date'
 # Signup Form Starts Here -->
@@ -14,6 +17,11 @@ class SignUpFrom(UserCreationForm):
         label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(
         attrs={'class': 'form-control'}))
+    mobile_number = PhoneNumberField(
+        widget=widgets.NumberInput(attrs={'class': 'form-control'}))
+    example_number = "+919875614230"
+    mobile_number.error_messages[
+        'invalid'] = f'Please enter a valid Number like : {example_number}'
 
     def clean_date_of_birth(self):
         dob = self.cleaned_data['date_of_birth']
@@ -31,7 +39,8 @@ class SignUpFrom(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'employee_id': forms.NumberInput(attrs={'class': 'form-control'}),
-            'mobile_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'mobile_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'mobile_number': PhoneNumberField(),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'emp_ctc': forms.NumberInput(attrs={'class': 'form-control'}),
             'manager_name': forms.TextInput(attrs={'class': 'form-control'}),
