@@ -15,8 +15,8 @@ class User(AbstractUser):
     mobile_number = models.CharField(max_length=10, null=True)
     date_of_birth = models.DateField(null=True)
     TYPE_SELECT = (
-        ('FEMALE', 'Female'),
         ('MALE', 'Male'),
+        ('FEMALE', 'Female'),
         ('OTHER', 'Other'),
     )
     gender = models.CharField(max_length=11,choices=TYPE_SELECT, default="Male")

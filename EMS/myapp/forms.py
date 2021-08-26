@@ -39,7 +39,7 @@ class SignUpFrom(UserCreationForm):
             'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
             'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
-            'gender': forms.RadioSelect(),
+            'gender': forms.Select(attrs={'class':'custom-select'}),
         }
 
 
@@ -93,5 +93,5 @@ class EditProfileForm(UserChangeForm):
             'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'emp_cv': forms.FileInput(attrs={'class': 'form-control'}),
             'emp_images': forms.FileInput(attrs={'class': 'form-control'}),
-            'gender': forms.RadioSelect(),
+            'gender': forms.Select(attrs={'class':'custom-select'}),
         }
